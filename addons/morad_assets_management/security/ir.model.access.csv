@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_asset_detail,access_account_asset_detail,model_account_asset_detail,base.group_user,1,1,1,1
+access_account_asset_detail_depreciation_line,access_account_asset_detail_depreciation_line,model_account_asset_detail_depreciation_line,base.group_user,1,1,1,1
+access_account_asset_detail_log,access_account_asset_detail_log,model_account_asset_detail_log,base.group_user,1,1,1,1
+access_approval_setting,access_approval_setting,model_approval_setting,base.group_user,1,1,1,1

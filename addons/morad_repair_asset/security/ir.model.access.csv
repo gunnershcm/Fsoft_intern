@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access.repair.management,access_repair_management,model_repair_management,base.group_user,1,1,1,1
+access.repair.service,access_repair_service,model_repair_service,base.group_user,1,1,1,1
+access.repair.management.part.selection,access_repair_management_part_selection,model_repair_management_part_selection,base.group_user,1,1,1,1
+access.repair.sparepart,access_repair_sparepart,model_repair_sparepart,base.group_user,1,1,1,1

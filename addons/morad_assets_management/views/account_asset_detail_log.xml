@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_asset_detail_log_tree" model="ir.ui.view">
+        <field name="name">account.asset.detail.log.tree</field>
+        <field name="model">account.asset.detail.log</field>
+        <field name="arch" type="xml">
+            <tree string="Asset detail log" create="false" edit="false">
+                <field name="log_time"/>
+                <field name="asset_id"/>
+                <field name="product_id"/>
+                <field name="asset_detail_id"/>
+                <field name="quantity"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_account_asset_detail_log_form" model="ir.ui.view">
+        <field name="name">account.asset.detail.log.form</field>
+        <field name="model">account.asset.detail.log</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false">
+                <sheet>
+                    <group name="general">
+                        <field name="log_time"/>
+                        <field name="asset_id"/>
+                        <field name="product_id"/>
+                        <field name="asset_detail_id"/>
+                        <field name="quantity"/>
+                    </group>
+                </sheet>
+            </form>                                                                                                             
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_account_asset_detail_log">
+        <field name="name">Asset detail log</field>
+        <field name="res_model">account.asset.detail.log</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_account_asset_detail_log_tree"/>
+        <!-- <field name="search_view_id" ref="view_account_asset_audit_ticket_search"/> -->
+    </record>
+   
+    <!-- <menuitem id="submenu_action_approval_setting"
+              name="Assets"
+              sequence="13"
+              parent="menu_action_account_asset_audit_ticket"
+              groups="base.group_user"/> -->
+
+    <menuitem id="menu_action_account_asset_detail_log"
+              name="Asset Detail Log"
+              sequence="2"
+              action="action_account_asset_detail_log"
+              parent="menu_asm_root"
+              groups="base.group_user"/>
+</odoo>

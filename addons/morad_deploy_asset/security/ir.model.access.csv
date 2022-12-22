@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_deploy,access_deploy,model_deploy,base.group_user,1,1,1,1
+access_deploy_demand,access_deploy_demand,model_deploy_demand,base.group_user,1,1,1,1
+access_deploy_asset,access_deploy_asset,model_deploy_asset,base.group_user,1,1,1,1

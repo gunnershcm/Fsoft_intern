@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_approval_setting_tree" model="ir.ui.view">
+        <field name="name">approval.setting.tree</field>
+        <field name="model">approval.setting</field>
+        <field name="arch" type="xml">
+            <tree string="Approval setting">
+                <field name="request_type"/>
+                <field name="approval_level"/>
+                <field name="user_group"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_approval_setting_form" model="ir.ui.view">
+        <field name="name">approval.setting.view</field>
+        <field name="model">approval.setting</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group name="general">
+                        <field name="request_type"/>
+                        <field name="approval_level"/>
+                        <field name="user_group" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+            </form>                                                                                                             
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="action_approval_setting">
+        <field name="name">Approval setting</field>
+        <field name="res_model">approval.setting</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_approval_setting_tree"/>
+        <!-- <field name="search_view_id" ref="view_account_asset_audit_ticket_search"/> -->
+    </record>
+   
+    <!-- <menuitem id="submenu_action_approval_setting"
+              name="Assets"
+              sequence="13"
+              parent="menu_action_account_asset_audit_ticket"
+              groups="base.group_user"/> -->
+
+    <menuitem id="menu_action_approval_setting"
+              name="Approval Setting"
+              sequence="7"
+              action="action_approval_setting"
+              parent="menu_asm_root"
+              groups="base.group_user"/>
+</odoo>

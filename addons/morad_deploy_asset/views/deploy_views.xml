@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="deploy_form_view" model="ir.ui.view">
+            <field name="name">deploy.form.view</field>
+            <field name="model">deploy</field>
+            <field name="arch" type="xml">
+                <form>
+                <header>
+                    <button id="button_confirm" name="action_confirmed" string="Confirm" states="draft" class="btn-primary" type="object" />
+                        <button id="button_approving" name="action_approving" string="Send to Approve" states="confirmed" class="btn-primary" type="object" />
+                        <button id="button_approved" name="action_approved" string="Approve" states="approving" class="btn-primary" type="object" />
+                        <button id="button_deliver" name="action_delivered" string="Delivered" states="approved" class="btn-primary" type="object" />
+                        <button id="button_deploy" name="action_deployed" string="Deployed" states="delivered" class="btn-primary" type="object" />
+                        <button id="button_validate" name="action_validated" string="Validated" states="deployed" class="btn-primary" type="object" />                     
+                        <button id="button_close" name="action_closed" string="Closed" states="validated" class="btn-primary" type="object" />
+                        <button id="button_draft" name="action_draft" string="Set to Draft" states="confirm,approving,approved,delivered,deployed,validated" class="btn-primary" type="object" />
+                        <button id="button_cancel" name="action_cancelled" string="Cancelled" states="draft,confirmed,approving,approved,delivered,deployed,validated" class="btn-primary" type="object" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,approving,approved,delivered,deployed,validated,closed" />
+                </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="deploy_id" placeholder="e.g. WD00001"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <!-- <field name="TicketCode"/> -->
+                                <field name="warehouse_id"/>
+                                <field name="partner_id"/>
+                                <field name ="note"/>
+                            </group>
+                            <group>
+                                <field name="ticket_created_time"/>
+                                <field name="requested_time"/>
+                                <field name="plan_deploy_time"/>
+                                <field name="actual_deploy_time"/>
+                                <field name="stock_in_time"/>
+                            </group>                            
+                        </group>
+                        <notebook>
+                            <page name="Asset_Demand" string="Asset Demand">
+                                <field name="asset_demand_line_ids">
+                                    <tree editable="bottom">
+                                        <field name="asset_detail_id"/>
+                                        <field name="category_id"/>
+                                        <field name="quantity"/>
+                                        <field name="warehouse_id" context="{'default_warehouse_id': warehouse_id}"/>
+                                        <!-- <field name="partner_id"/> -->
+                                    </tree>
+                                </field>
+                                <group>
+                                    <field name="total"/> 
+                                </group>
+                            </page>	
+                            <page name="Asset_information" string="Asset Information">
+                                <field name="asset_asset_line_ids">
+                                    <tree editable="bottom">
+                                        <field name="asset_detail_id"/>
+                                        <field name="category_id"/>
+                                        <field name="quantity"/>
+                                        <field name="value"/>
+                                        <field name="value_residual"/>
+                                        <field name="status"/>
+                                        <field name="warehouse_id" context="{'default_warehouse_id': warehouse_id}"/>
+                                        <!-- <field name="total_demand"/> -->
+                                    </tree>
+                                </field>
+                                <group>
+                                    <field name="total_residual"/>
+                                </group>
+                            </page>	
+                            	
+						</notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="deploy_tree_view" model="ir.ui.view">
+            <field name="name">deploy.tree.view</field>
+            <field name="model">deploy</field>
+            <field name="arch" type="xml">
+                <tree string="Deploys" default_order="create_date desc">
+                    <!-- <field name="TicketCode"/> -->
+                    <field name="deploy_id"/>
+                    <field name="warehouse_id"/>
+                    <field name="partner_id"/>
+                    <field name="ticket_created_time"/>                    
+                    <field name="requested_time"/>
+                    <field name="actual_deploy_time"/>
+                    <field name="stock_in_time"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_deploy" model="ir.actions.act_window">
+            <field name="name">Deploy</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">deploy</field>
+            <!-- <field name="view_type">form</field> --> <!-- Odoo 13 has removed this field -->
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('deploy_tree_view')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('deploy_form_view')})]"/>
+        </record>
+
+        <menuitem id="menu_deploy"
+            name="Deploy Asset"
+            action="action_deploy"
+            parent="morad_assets_management.menu_asm_root"
+            sequence="3"
+            groups="base.group_user"/>
+    </data>
+</odoo>

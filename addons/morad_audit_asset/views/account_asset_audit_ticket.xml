@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_asset_audit_ticket_tree" model="ir.ui.view">
+        <field name="name">account.asset.audit.ticket.tree</field>
+        <field name="model">account.asset.audit.ticket</field>
+        <field name="arch" type="xml">
+            <tree string="Asset audit ticket" class="ticket_list" decoration-info="state == 'draft'">
+                <field name="ticket_id"/>
+                <field name="baseline_time"/>
+                <field name="ticket_created_time"/>
+                <field name="auditor"/>
+                <field name="asset_quantity"/>
+                <field name="state" class="ticket_status"
+                       decoration-info="state == 'draft'" 
+                       decoration-success="state == 'close'"
+                       decoration-warning="state == 'cancel'"
+                       widget="badge"/>
+                <!-- <field name="state" 
+                       decoration-muted="state == 'draft'" 
+                       decoration-info="state == 'confirm'"
+                       decoration-success="state == 'open'"
+                       decoration-warning="state == 'close'"
+                       decoration-danger="state == 'cancel'"/> -->
+                <field name="ticket_description"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_account_asset_audit_ticket_search" model="ir.ui.view">
+        <field name="name">account.asset.audit.ticket.search</field>
+        <field name="model">account.asset.audit.ticket</field>
+        <field name="arch" type="xml">
+            <search string="Audit ticket search">
+                <field name="ticket_id"/>
+                <field name="auditor"/>
+                
+                <!-- co bug -->
+                <field name="ticket_detail_ids" string="Asset detail code" domain="[('asset_detail_id', 'ilike', self)]"/>
+
+                <group expand='0' string='Filters'>
+                    <filter name="draft_filter" string="Draft ticket" domain="[('state', '=',  'draft')]"/>
+                    <filter name="closed_filter" string="Closed ticket" domain="[('state', '=',  'close')]"/>
+                    <filter name="canceled_filter" string="Canceled ticket" domain="[('state', '=',  'cancel')]"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_account_asset_audit_ticket_form" model="ir.ui.view">
+        <field name="name">account.asset.audit.ticket.view</field>
+        <field name="model">account.asset.audit.ticket</field>
+        <field name="arch" type="xml">
+            <form class="ticket_form" attrs="{'readonly':['|',('state','=','cancel'),('state','=','close')]}">
+                <header>
+                    <!-- <button name="confirm_action" string="Confirm" states="draft" class="oe_highlight btn-primary" type="object"></button>
+                    <button name="set_to_draft_action" string="Set to Draft" states="confirm" class="oe_highlight btn-primary" type="object"></button>
+                    <button name="audit_action" string="Audit" states="confirm" class="oe_highlight btn-primary" type="object"></button> -->
+                    <button name="close_action" string="Close" states="draft" class="oe_highlight btn-primary" type="object"></button>
+                    <button name="cancel_action" string="Cancel" states="draft" type="object"></button>
+                    <field name="state" widget="statusbar" readonly="1" statusbar_visible="draft,close"/>
+                </header>
+                <sheet>
+                    <group name="general">
+                        <group>
+                            <field name="ticket_id" placeholder="e.g. AA/121022/001" attrs="{'readonly':['|',('state','=','cancel'),('state','=','close')]}"/>
+                            <field name="auditor" attrs="{'readonly':['|',('state','=','cancel'),('state','=','close')]}"/>
+                            <field name="ticket_description"/>
+                        </group>
+                        <!-- attrs="{'invisible':['|',('filed_name_1','=',False),('fieled_name_2','=',False)]}"   for OR -->
+                        <!-- attrs="{'invisible':['&',('filed_name_1','=',False),('fieled_name_2','=',False)]}"  for AND -->
+                        <group>
+                            <field name="ticket_created_time" attrs="{'readonly':['|',('state','=','cancel'),('state','=','close')]}"/>
+                            <field name="baseline_time" attrs="{'readonly':['|',('state','=','cancel'),('state','=','close')]}"/>
+                            <field name="help_note" widget="html" nolabel="1"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page name="asset_audit_detail" string="Audit detail">
+                            <!-- <table class="tbl_fake_header tbl_audit_detail">
+                                <thead>
+                                    <tr>
+                                        <th class="asset_detail_code_header" rowspan="2">Asset detail code</th>
+                                        <th colspan="2">Location type</th>
+                                        <th colspan="2">Location</th>
+                                        <th colspan="2">Latitude</th>
+                                        <th colspan="2">Longitude</th>
+                                        <th colspan="2">Location deviation</th>
+                                        <th class="status_header" rowspan="2">Status</th>
+                                        <th class="audit_time_header" rowspan="2">Audit time</th>
+                                        <th class="image_header" rowspan="2">Image</th>
+                                        <th class="action_header" rowspan="2">Action</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="system_header location_type">System</th>
+                                        <th class="audit_header location_type">Audit</th>
+                                        <th class="system_header location">System</th>
+                                        <th class="audit_header location">Audit</th>
+                                        <th class="system_header latitude">System</th>
+                                        <th class="audit_header latitude">Audit</th>
+                                        <th class="system_header longitude">System</th>
+                                        <th class="audit_header longitude">Audit</th>
+                                        <th class="has_gap">Gap?</th>
+                                        <th class="gap_distance">Gap distance (m)</th>
+                                    </tr>
+                                </thead>
+                            </table> -->
+                            <field name="ticket_detail_ids" attrs="{'readonly':['|',('state','=','cancel'),('state','=','close')]}">
+                                <tree class="ticket_detail_ids">
+                                    <field name="asset_detail_id"></field>
+                                    <field name="location_type_system"></field>
+                                    <field name="location_type_audit"></field>
+                                    <field name="location_system"></field>
+                                    <field name="location_audit"></field>
+                                    <field name="latitude_system"></field>
+                                    <field name="latitude_audit"></field>
+                                    <field name="longitude_system"></field>
+                                    <field name="longitude_audit"></field>
+                                    <field name="has_gap"></field>
+                                    <field name="gap_distance"></field>
+                                    <!-- <field name="auditor"></field> -->
+                                    <field name="status"></field>
+                                    <field name="audit_time"></field>
+                                    <field name="image" class="item_image" widget="image" display="thumbnail"></field>
+                                </tree>
+                                <form>
+                                    <sheet>
+                                        <group name="information">
+                                            <group>
+                                                <field name="asset_detail_id" placeholder="e.g. AD/251022/001"/>
+                                                <field name="status" options="{'create': True, 'no_open': True}" editable="bottom"/>
+                                                <field name="audit_time"/>
+                                            </group>
+                                            <group>
+                                                <field name="image" widget="image" class="oe_avatar"></field>        
+                                            </group>
+                                        </group>
+                                        <group name="location">
+                                            <group name="system" string="System">
+                                                <field name="location_type_system" ></field>    
+                                                <field name="location_system" ></field>
+                                                <field name="latitude_system" ></field>
+                                                <field name="longitude_system" ></field>
+                                            </group>
+                                            <group name="audit" string="Audit">
+                                                <field name="location_type_audit"></field>
+                                                <field name="location_audit"></field>
+                                                <field name="latitude_audit"></field>
+                                                <field name="longitude_audit"></field>  
+                                            </group>  
+                                        </group>
+                                        <group>
+                                            <group>
+                                            </group>
+                                            <group>
+                                                <field name="gap_distance"/>
+                                                <field name="has_gap" string="Has gap" readonly="1"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                    
+                                </form>
+                            </field>
+                        </page>
+                        <!-- <page name="asset_audit_committee" string="Audit committee">
+                            <field name="ticket_committee_ids" attrs="{'readonly':[('state','==','cancel')]}">
+                                <tree editable="bottom">
+                                    <field name="ticket_id" invisible="1"></field>
+                                    <field name="auditor_name"></field>
+                                    <field name="is_lead"></field>
+                                </tree>
+                            </field>
+                        </page>							 -->
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>                                                                                                             
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="action_account_asset_audit_ticket">
+        <field name="name">Asset audit ticket</field>
+        <field name="res_model">account.asset.audit.ticket</field>
+        <field name="view_mode">tree,form,search</field>
+        <field name="view_id" ref="view_account_asset_audit_ticket_tree"/>
+        <!-- <field name="form_view_id" ref="view_account_asset_audit_ticket_form"/> -->
+        <field name="search_view_id" ref="view_account_asset_audit_ticket_search"/>
+    </record>
+   
+    <!-- <menuitem id="menu_action_account_asset_audit_ticket"
+              name="Assets Management"
+              sequence="10"
+              groups="base.group_user"/> -->
+
+    <!-- <menuitem id="submenu_action_account_asset_audit_ticket"
+              name="Assets"
+              sequence="11"
+              parent="menu_action_account_asset_audit_ticket"
+              groups="base.group_user"/> -->
+
+    <menuitem id="submenu_action_account_asset_audit_ticket"
+              name="Audit Assets"
+              sequence="6"
+              action="action_account_asset_audit_ticket"
+              parent="morad_assets_management.menu_asm_root"
+              groups="base.group_user"/>
+</odoo>

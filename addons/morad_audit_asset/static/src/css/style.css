@@ -1,0 +1,166 @@
+.ticket_list table tr .o_list_record_selector {
+    width: 40px !important;
+}
+
+.ticket_list table tr .o_column_sortable[data-name="ticket_id"],
+.ticket_list table tr .o_data_cell[name="ticket_id"],
+.ticket_list table tr .o_column_sortable[data-name="baseline_time"],
+.ticket_list table tr .o_column_sortable[data-name="ticket_created_time"],
+.ticket_list table tr .o_column_sortable[data-name="auditor"],
+.ticket_list table tr .o_column_sortable[data-name="asset_quantity"],
+.ticket_list table tr .o_column_sortable[data-name="state"] {
+    width: 12% !important;
+    text-align: left !important;
+}
+
+.ticket_list table tr .o_data_cell[name="state"] {
+    text-align: center !important;
+}
+
+.ticket_list table tr .o_column_sortable[data-name="ticket_description"] {
+    width: 28% !important;
+}
+
+.ticket_form .o_form_sheet_bg .o_form_sheet {
+    width: 80% !important;
+    max-width: 80% !important;
+}
+/* 
+/* FAKE HEADER */
+.tbl_fake_header {
+    float: left !important;
+    width: 100% !important;
+    z-index: 1 !important;
+    position: relative !important;
+    border: none !important;
+    margin-bottom: -25px !important;
+}
+
+div[name='ticket_detail_ids'] {
+    margin-top: 30px !important;
+}
+
+div[name='ticket_committee_ids'] {
+    width: 35% !important;
+    min-width: 500px;
+}
+
+.tbl_fake_header thead {
+    border: none !important;
+}
+
+.tbl_fake_header thead tr th {
+    text-align: center !important;
+    min-height: 24px !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    border: 1px solid #dfdfdf !important;
+}
+
+.tbl_fake_header thead tr th.system_header,
+.tbl_fake_header thead tr th.audit_header {
+    width: 100px !important;
+    max-width: 100px !important;
+}
+
+.tbl_fake_header thead tr th.has_gap {
+    width: 70px !important;
+    max-width: 70px !important;
+}
+
+.tbl_fake_header thead tr th.gap_distance {
+    width: 130px !important;
+    max-width: 130px !important;
+}
+
+/* .tbl_fake_header thead tr th.auditor_header {
+    width: 120px !important;
+    max-width: 120px !important;
+} */
+
+.tbl_fake_header thead tr th.audit_time_header {
+    width: 140px !important;
+    max-width: 140px !important;
+}
+
+.tbl_fake_header thead tr th.image_header {
+    width: 120px !important;
+    max-width: 120px !important;
+}
+
+.ticket_detail_ids {
+    margin-top: -12px !important;
+}
+
+.tbl_audit_detail thead tr th.asset_detail_code_header {
+    width: 130px !important;
+}
+
+.ticket_detail_ids thead {
+    background: none !important;
+}
+
+/* .ticket_detail_ids thead th {
+    font-size: 0px !important;
+    z-index: 0 !important;
+    border: none !important;
+    height: 0px !important;
+}  */
+/* 
+.ticket_detail_ids table tbody tr td:first-child {
+    width: 130px !important;
+    max-width: 130px !important;
+}
+
+.ticket_detail_ids table tbody tr td:first-child {
+    width: 130px !important;
+    max-width: 130px !important;
+}
+
+.ticket_detail_ids table tbody tr td[name="location_type_system"],
+.ticket_detail_ids table tbody tr td[name="location_type_audit"],
+.ticket_detail_ids table tbody tr td[name="location_system"],
+.ticket_detail_ids table tbody tr td[name="location_audit"],
+.ticket_detail_ids table tbody tr td[name="latitude_system"],
+.ticket_detail_ids table tbody tr td[name="latitude_audit"],
+.ticket_detail_ids table tbody tr td[name="longitude_system"],
+.ticket_detail_ids table tbody tr td[name="longitude_audit"] {
+    width: 100px !important;
+    max-width: 100px !important;
+}
+
+.ticket_detail_ids table tbody tr td[name="has_gap"] {
+    width: 70px !important;
+    text-align: center !important;
+}
+
+.ticket_detail_ids table tbody tr td[name="gap_distance"] {
+    width: 130px !important;
+    max-width: 130px !important;
+} */
+
+/* .ticket_detail_ids table tbody tr td[name="auditor"] {
+    width: 120px !important;
+    max-width: 120px !important;
+} */
+/* 
+.ticket_detail_ids table tbody tr td[name="audit_time"] {
+    width: 140px !important;
+    max-width: 140px !important;
+} */
+
+.ticket_detail_ids table tbody tr td .item_image {
+    width: 120px !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.ticket_detail_ids table tbody tr td .item_image img {
+    width: 40px !important;
+    height: 40px !important;
+}
+
+.ticket_list table tbody tr td.o_badge_cell {
+    display: flex !important;
+    justify-content: center !important;
+}

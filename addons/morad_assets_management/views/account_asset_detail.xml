@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_asset_detail_tree" model="ir.ui.view">
+        <field name="name">account.asset.detail.tree</field>
+        <field name="model">account.asset.detail</field>
+        <field name="arch" type="xml">
+            <tree string="Asset detail" decoration-info="state == 'draft'">
+                <field name="asset_detail_id"/>
+                <field name="product_id"/>
+                <field name="asset_id"/>
+                <field name="detail_quantity"/>
+                <field name="asset_type_ext"
+                    decoration-danger="asset_type_ext == 'non-identical'" 
+                    decoration-muted="asset_type_ext == 'identical'"
+                    widget="badge"/>
+                <field name="state" 
+                       decoration-info="state == 'draft'" 
+                       decoration-success="state == 'avail'"
+                       decoration-warning="state == 'cancel'"
+                       widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_account_asset_detail_form" model="ir.ui.view">
+        <field name="name">account.asset.detail.form</field>
+        <field name="model">account.asset.detail</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button type="object" name="display_depreciation" string="Display Depreciation" class="oe_highlight"/>
+                    <button name="confirm_action" string="Confirm" states="draft" class="oe_highlight btn-primary" type="object"/>
+                    <button name="cancel_action" string="Cancel" states="draft" type="object"/>
+                    <button name="set_draft" string="Set to Draft" states="avail" type="object"/>
+                    <field name="state" widget="statusbar" readonly="1" statusbar_visible="draft,avail"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="asset_id" class="oe_edit_only"/>
+                        <h1>
+                            <field name="asset_id" domain="[('state', '=', 'open')]" options="{'no_create': True, 'no_create_edit':True}"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="asset_detail_info" string="Asset Detail Information">
+                            <field name="asset_detail_id"/>
+                            <field name="detail_quantity" attrs="{'readonly':[('asset_type_ext','=','identical')]}"/>
+                        </group>
+                    </group>
+                    <group name="general">
+                        <group name="product_info" string="Product Information">
+                            <field name="product_id"/>    
+                            <field name="product_type"/>    
+                            <field name="product_qty"/>    
+                            <field name="avail_product_qty"/>    
+                        </group>
+                        <group name="asset_info" string="Asset Information">
+                            <field name="asset_type_ext"/>
+                            <field name="max_asset_detail_qty"/>
+                            <field name="avail_asset_detail_qty"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Depreciation Board">
+                            <field name="depreciation_line_ids" mode="tree" options="{'reload_whole_on_button': true}">
+                                <tree string="Depreciation Lines" create="false">
+                                    <!-- <field name="asset_detail_id"/> -->
+                                    <field name="depreciation_date"/>
+                                    <field name="amount" widget="monetary" string="Depreciation"/>
+                                    <field name="depreciated_value" />
+                                    <field name="remaining_value" widget="monetary" string="Residual"/>
+                                    <!-- <field name="move_check" widget="deprec_lines_toggler" attrs="{'invisible': [('parent_state', '!=', 'open')]}"/> -->
+                                    <!-- <field name="move_posted_check" invisible="1"/> -->
+                                    <!-- <field name="parent_state" invisible="1"/> -->
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                   
+                </div>
+            </form>                                                                                                             
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="action_account_asset_detail">
+        <field name="name">Asset detail</field>
+        <field name="res_model">account.asset.detail</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_account_asset_detail_tree"/>
+        <!-- <field name="search_view_id" ref="view_account_asset_audit_ticket_search"/> -->
+    </record>
+   
+    <!-- <menuitem id="submenu_action_approval_setting"
+              name="Assets"
+              sequence="13"
+              parent="menu_action_account_asset_audit_ticket"
+              groups="base.group_user"/> -->
+
+    <menuitem id="menu_asm_root" name="Assets Management" sequence="0" groups="base.group_user"/>
+    <menuitem id="menu_action_account_asset_detail"
+              name="Asset Detail"
+              sequence="1"
+              action="action_account_asset_detail"
+              parent="menu_asm_root"
+              groups="base.group_user"/>
+
+</odoo>

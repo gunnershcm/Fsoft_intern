@@ -1,0 +1,76 @@
+version: '3.5'
+services:
+  db:
+    image: postgres:14
+    user: root
+    environment:
+      - POSTGRES_USER=training
+      - POSTGRES_PASSWORD=training     
+      - POSTGRES_DB=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    restart: always             # run as a service
+    volumes:
+        - ./postgresql:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    networks:
+      - trainingnetwork
+
+  odoo15:
+    image: odoo:15
+    user: root
+    depends_on:
+      - db
+    ports:
+      - "10015:8069"
+      - "20015:8072" # live chat
+    tty: true
+    command: --
+    environment:
+      HOST: db
+      USER: training
+      PASSWORD: training
+      WDB_NO_BROWSER_AUTO_OPEN: true
+      WDB_SOCKET_SERVER: wdb
+      WDB_WEB_PORT: 1984
+      WDB_WEB_SERVER: localhost
+    links:
+      - wdb:wdb
+    volumes:
+      - ./addons:/mnt/extra-addons
+      - ./etc:/etc/odoo
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "4"
+    networks:
+      - trainingnetwork
+    restart: always    
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - ./pgadmin:/var/lib/pgadmin
+
+    ports:
+      - "${PGADMIN_PORT:-5051}:80"
+    networks:
+      - trainingnetwork
+    restart: unless-stopped
+
+  wdb:
+    image: yajo/wdb-server
+    ports:
+      - "1984:1984"
+    networks:
+      - trainingnetwork
+      
+networks:
+  trainingnetwork:
+    driver: bridge
+

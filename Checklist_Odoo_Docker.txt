@@ -1,0 +1,68 @@
+Install and run Odoo in local computer
+============================================================================================================================================
+
+- Download Docker and Docker compose:
+	https://download.docker.com/linux/ubuntu/dists/bionic/pool/stable/amd64/containerd.io_1.5.10-1_amd64.deb
+	https://download.docker.com/linux/ubuntu/dists/bionic/pool/stable/amd64/docker-ce-cli_20.10.9~3-0~ubuntu-bionic_amd64.deb
+	https://download.docker.com/linux/ubuntu/dists/bionic/pool/stable/amd64/docker-ce_20.10.9~3-0~ubuntu-bionic_amd64.deb
+	https://download.docker.com/linux/ubuntu/dists/bionic/pool/stable/amd64/docker-compose-plugin_2.3.3~ubuntu-bionic_amd64.deb
+
+	Install by command:
+		sudo dpkg -i package-name
+
+	Order of installation: 
+		Containerd.io -> docker-ce-cli -> docker-ce -> docker-compose
+	
+
+- Download source and extract
+
+- Start Docker by commands
+	+ sudo systemctl start docker
+	+ sudo systemctl enable docker
+	+ sudo service docker status
+	
+- Run project:
+	+ cd *project's folder*
+	+ mkdir pgadmin postgresql
+	+ sudo chmod -R 777 pgadmin postgresql
+	+ sudo docker compose up -d
+
+- Project's configuration:
+
+	# Odoo web: http://localhost:10015
+		First of all, create new database
+			+ Master pass: training
+			+ Email: training
+			+ Password: training
+			+ Language: Vietnamese
+			+ Country: Vietnamese
+
+	# PgAdmin web: http://localhost:5050
+    		Master Password: admin
+
+    		Connect to database by pgadmin:
+            	Click "Add New Server"
+                	Tab "General"
+                    		name: "training" (can rename)
+                	Tab "Connection"
+                    		Host name/address: db
+                    		Port: 5432
+                    		Maintenance database: postgres
+                    		Username: training
+                    		Password: training
+                	=> Click "Save"
+
+# In Visual Code, install Docker extension, run cmd for remote container: 
+	sudo chmod o+rw /var/run/docker.sock
+
+# Debug with wdb: http://localhost:1984
+        Attach sell of odoo-odoo15-1: 
+		pip3 --proxy=http://10.89.15.10:9090 install wdb
+        Add debug:
+            Add line: 
+		import wdb; wdb.set_trace()
+
+# Run docker: 
+	"run.bat" or "docker-compose up -d"
+
+

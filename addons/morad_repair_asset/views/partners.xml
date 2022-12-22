@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_repair_service_vendor_tree" model="ir.ui.view">
+            <field name="name">repair.service.vendor.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <page name='sales_purchases' position='after'>
+                    <page string='Services' name='service_vendor'>
+                        <field name='service_ids' string="Services" options="{'no_create': True}" domain="[('partner_id','=',id)]" />
+                    </page>
+                </page>
+            </field>
+        </record>
+    </data>
+</odoo>

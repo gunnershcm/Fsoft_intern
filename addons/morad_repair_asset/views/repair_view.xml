@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Repair Form-->
+    <!-- Tree-->
+    <record id="view_repair_management_tree" model="ir.ui.view">
+        <field name="name">repair.management.tree</field>
+        <field name="model">repair.management</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ref" string="Ticket" />
+                <field name="partner_id" string="Request From" />
+                <field name="request_date" />
+                <field name="finish_date" />
+                <field name="state" />
+                <field name="note" />
+            </tree>
+        </field>
+    </record>
+    <!-- Search-->
+    <record id="view_repair_management_search" model="ir.ui.view">
+        <field name="name">repair.management.search</field>
+        <field name="model">repair.management</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id" string="Request From" />
+            </search>
+        </field>
+    </record>
+    <!-- Form-->
+    <record id="view_repair_management_form" model="ir.ui.view">
+        <field name="name">repair.management.form</field>
+        <field name="model">repair.management</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="button_confirm" string="Confirm" type="object" states='draft' class="oe_highlight" />
+                    <button name="button_quote" string="Quotation" type="object" states='confirm' class="oe_highlight" />
+                    <button name="button_approve" string="Approve" type="object" states='quote' class="oe_highlight" />
+                    <button name="button_execute" string="Execute" type="object" states='approved' class="oe_highlight" />
+                    <button name="button_validate" string="Validate" type="object" states='execute' class="oe_highlight" />
+                    <button name="button_close" string="Close" type="object" states='validate' class="oe_highlight" />
+                    <button name="button_draft" string="Set To Draft" states='draft,confirm' type="object" class="btn_primary" confirm="Are you sure to set this repairment to Draft ?" />
+                    <button name="button_cancel" string="Cancel" states='confirm,quote,approved,execute,validate' type="object" class="btn_primary" confirm="Are you sure to Cancel this repairment ?" />
+
+                    <field name="state" widget="statusbar" nolable="1"
+                        statusbar_visible="draft,confirm,quote,approving,approved,execute,validate,close" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="request_date" />
+                            <field name="partner_id" />
+                            <field name="note" />
+                        </group>
+                        <group>
+                            <field name="ref" />
+                            <field name="asset_detail_id" />
+                            <field name="currency_id" invisible="1" />
+                            <field name="active" invisible="1" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Service">
+                            <field name='service_ids' string="Services" domain="[('partner_id', '=',partner_id)]" />
+                        </page>
+                        <page string="Spare Parts">
+                            <field name='sparepart_line_ids'>
+                                <tree editable='bottom'>
+                                    <field name='sparepart_id' />
+                                    <field name='sparepart_name' />
+                                    <field name='sparepart_unit_price' />
+                                    <field name='sparepart_quantity' />
+                                    <field name='currency_id' invisible="1" />
+                                    <field name='tax' />
+                                    <field name='sparepart_untaxed' />
+                                    <field name='note' />
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name='sparepart_id' />
+                                        <field name='sparepart_name' />
+                                        <field name='sparepart_unit_price' />
+                                        <field name='sparepart_quantity' />
+                                        <field name='currency_id' invisible="1" />
+                                        <field name='tax' />
+                                        <field name='sparepart_untaxed' />
+                                        <field name='note' />
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group col="12">
+                        <group colspan="6" />
+                        <group colspan="3">
+                            <field name='service_untaxed' attrs="{'invisible':[('service_tax','=',0)]}" />
+                            <field name='service_tax' attrs="{'invisible': [('service_tax','=',0)]}" />
+                            <field name='service_total' />
+                        </group>
+                        <group colspan="3">
+                            <field name='sparepart_untaxed' attrs="{'invisible':[('sparepart_untaxed','=',0)]}" />
+                            <field name='sparepart_tax' attrs="{'invisible': [('sparepart_tax','=',0)]}" />
+                            <field name='sparepart_total' />
+                        </group>
+                    </group>
+                    <group col="12">
+                        <group colspan="8" />
+                        <group colspan="4">
+                            <field name='total' decoration-danger="total > asset_detail_residual" />
+                            <field name="asset_detail_residual" />
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_repair_management" model="ir.actions.act_window">
+        <field name="name">Repair Management</field>
+        <field name="res_model">repair.management</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Repair note!!!
+            </p>
+        </field>
+    </record>
+    <!-- <menuitem id="menu_repair_master" name="Repair" parent="menu_repair_root" sequence="0" />
+    <menuitem id="menu_action_repair_management"
+        name="Ticket"
+        action="action_repair_management"
+        parent="menu_repair_master"
+        sequence="0" /> -->
+
+    <menuitem id="menu_repair_management"
+        name="Repair Asset"
+        parent="morad_assets_management.menu_asm_root"
+        sequence="5"
+        groups="base.group_user"/>
+
+    <menuitem id="menu_action_repair_management"
+        name="Ticket"
+        action="action_repair_management"
+        parent="menu_repair_management"
+        sequence="6"/>
+    
+</odoo>

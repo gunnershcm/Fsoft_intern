@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_asset_audit_ticket,access_account_asset_audit_ticket,model_account_asset_audit_ticket,base.group_user,1,1,1,1
+access_account_asset_audit_detail,access_account_asset_audit_detail,model_account_asset_audit_detail,base.group_user,1,1,1,1
+access_account_asset_detail_status,access_account_asset_detail_status,model_account_asset_detail_status,base.group_user,1,1,1,1
